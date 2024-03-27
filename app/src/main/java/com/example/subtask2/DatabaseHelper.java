@@ -97,6 +97,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void deletePlaylistItem(int userId, String url) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PLAYLIST, COLUMN_USER_ID + "=? AND " + COLUMN_URL + "=?", new String[]{String.valueOf(userId), url});
+        db.close();
+    }
+
+
+
     public void addUrlToPlaylist(int userId, String url) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

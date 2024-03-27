@@ -1,5 +1,6 @@
 package com.example.subtask2;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,40 +8,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity {
+public class PlaylistActivity extends AppCompatActivity implements PlaylistAdapter.ItemDeleteListener {
 
     private DatabaseHelper databaseHelper;
     private RecyclerView recyclerView;
     private PlaylistAdapter adapter;
     private int currentUserId;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_playlist); // Consider renaming this layout file
+        setContentView(R.layout.fragment_playlist);
 
         databaseHelper = new DatabaseHelper(this);
-
         recyclerView = findViewById(R.id.playlistRecyclerView);
-
-        currentUserId = getCurrentUserIdFromIntent();
+        String currentUsername = getCurrentUsername();
+        currentUserId = databaseHelper.getUserIdByUsername(currentUsername);
 
         if (currentUserId != -1) {
-            List<String> playlist = databaseHelper.getUserPlaylist(currentUserId);
-            setupRecyclerView(playlist);
+            refreshPlaylist();
         }
     }
 
-    private void setupRecyclerView(List<String> playlist) {
-        adapter = new PlaylistAdapter(playlist);
+    private String getCurrentUsername() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        return sharedPreferences.getString("Username", null); // Return null if "Username" doesn't exist
+    }
+
+    private void refreshPlaylist() {
+        List<String> playlist = databaseHelper.getUserPlaylist(currentUserId);
+        adapter = new PlaylistAdapter(playlist, this); // 'this' now correctly refers to an ItemDeleteListener
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
-    private int getCurrentUserIdFromIntent() {
-        // This method assumes you are passing the current user ID as an extra in the intent
-        return getIntent().getIntExtra("currentUserId", -1);
+
+    @Override
+    public void onItemDelete(int position) {
+        String urlToDelete = adapter.playlist.get(position);
+        databaseHelper.deletePlaylistItem(currentUserId, urlToDelete);
+        refreshPlaylist(); // Refresh your list
     }
 }
