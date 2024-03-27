@@ -14,6 +14,8 @@ public class PlaylistActivity extends AppCompatActivity {
     private PlaylistAdapter adapter;
     private int currentUserId;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +23,8 @@ public class PlaylistActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        // Initialize your views here
         recyclerView = findViewById(R.id.playlistRecyclerView);
 
-        // Retrieve the current user ID. This requires you to pass the user ID differently since this is now an activity.
-        // For example, you could pass the user ID through an intent when starting this activity.
         currentUserId = getCurrentUserIdFromIntent();
 
         if (currentUserId != -1) {

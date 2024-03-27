@@ -13,6 +13,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     private List<String> playlist;
 
+
+
     public PlaylistAdapter(List<String> playlist) {
         this.playlist = playlist;
     }
