@@ -3,6 +3,8 @@ package com.example.subtask2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ public class mainMenuActivity extends AppCompatActivity {
         EditText urlEditText = findViewById(R.id.url);
         Button addButton = findViewById(R.id.btn_add);
         Button playlistButton = findViewById(R.id.btn_playlist);
+        Button play = findViewById(R.id.btn_play);
 
         String currentUsername = getCurrentUsername();
         currentUserId = databaseHelper.getUserIdByUsername(currentUsername);
@@ -48,6 +51,31 @@ public class mainMenuActivity extends AppCompatActivity {
 
             // Start PlaylistActivity
             startActivity(intent);
+        });
+
+        play.setOnClickListener(v -> {
+            String url = urlEditText.getText().toString().trim();
+            if (!url.isEmpty()) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(mainMenuActivity.this);
+                alert.setTitle("Play Video");
+
+                WebView webView = new WebView(mainMenuActivity.this);
+                webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript
+                webView.loadUrl(url); // Load the URL
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        return false;
+                    }
+                });
+
+                alert.setView(webView);
+                alert.setNegativeButton("Close", (dialog, id) -> dialog.dismiss());
+                AlertDialog dialog = alert.create();
+                dialog.show();
+            } else {
+                Toast.makeText(mainMenuActivity.this, "Please enter a URL", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
