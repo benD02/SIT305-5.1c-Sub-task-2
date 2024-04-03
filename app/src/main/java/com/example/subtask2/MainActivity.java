@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-// Include the necessary imports
 
 public class MainActivity extends AppCompatActivity {
 

@@ -21,7 +21,7 @@ public class mainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main_menu_activity); // You should rename this layout to reflect that it's now used by an Activity
+        setContentView(R.layout.fragment_main_menu_activity);
 
         databaseHelper = new DatabaseHelper(this);
         EditText urlEditText = findViewById(R.id.url);

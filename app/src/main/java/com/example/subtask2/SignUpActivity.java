@@ -16,7 +16,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_signup_activity); // Ensure you have a layout file named activity_sign_up.xml
+        setContentView(R.layout.fragment_signup_activity); // Fragment signup Xml file
 
         // Initialize your views here
         editTextFullName = findViewById(R.id.fullName);
@@ -25,7 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
         editTextConfirmPassword = findViewById(R.id.confirmPassword);
         Button signUpButton = findViewById(R.id.createAccountButton);
 
-        databaseHelper = new DatabaseHelper(this); // Use 'this' for the context
+        databaseHelper = new DatabaseHelper(this); // this context for curent fragemnt
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +51,6 @@ public class SignUpActivity extends AppCompatActivity {
         if (!databaseHelper.checkUser(username, password)) {
             databaseHelper.addUser(fullName, username, password);
             Toast.makeText(SignUpActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
-            // Optionally finish the activity to return to the previous screen
             finish();
         } else {
             Toast.makeText(SignUpActivity.this, "User already exists", Toast.LENGTH_SHORT).show();

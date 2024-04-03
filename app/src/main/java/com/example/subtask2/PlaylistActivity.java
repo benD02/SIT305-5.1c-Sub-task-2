@@ -32,12 +32,12 @@ public class PlaylistActivity extends AppCompatActivity implements PlaylistAdapt
 
     private String getCurrentUsername() {
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        return sharedPreferences.getString("Username", null); // Return null if "Username" doesn't exist
+        return sharedPreferences.getString("Username", null);
     }
 
     private void refreshPlaylist() {
         List<String> playlist = databaseHelper.getUserPlaylist(currentUserId);
-        adapter = new PlaylistAdapter(playlist, this); // 'this' now correctly refers to an ItemDeleteListener
+        adapter = new PlaylistAdapter(playlist, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -47,6 +47,6 @@ public class PlaylistActivity extends AppCompatActivity implements PlaylistAdapt
     public void onItemDelete(int position) {
         String urlToDelete = adapter.playlist.get(position);
         databaseHelper.deletePlaylistItem(currentUserId, urlToDelete);
-        refreshPlaylist(); // Refresh your list
+        refreshPlaylist();
     }
 }
